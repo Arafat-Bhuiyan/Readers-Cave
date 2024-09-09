@@ -2,29 +2,30 @@ import { useEffect, useState } from "react";
 import { useLoaderData } from "react-router-dom";
 import { getStoredReadingList, getStoredWishlist } from "../utility/localstorage";
 import ReadBookList from "../ReadBookList/ReadBookList";
+import Wishlist from "../Wishlist.jsx/Wishlist";
 
 const ListedBooks = () => {
-  const [activeTab, setActiveTab] = useState('read'); // Controls which tab is active
+    const [activeTab, setActiveTab] = useState('read'); // Controls which tab is active
 
-  // Function to switch between tabs
-  const handleTabClick = (tab) => {
-    setActiveTab(tab);
-  };
+    // Function to switch between tabs
+    const handleTabClick = (tab) => {
+        setActiveTab(tab);
+    };
 
-  const books = useLoaderData()
+    const books = useLoaderData()
 
-  // set read lists   
-  const [readLists, setReadLists] = useState([])
-  const [displayReadLists, setDisplayReadLists] = useState([])
+    // set read lists   
+    const [readLists, setReadLists] = useState([])
+    const [displayReadLists, setDisplayReadLists] = useState([])
 
-  useEffect(() => {
-    const storedReadingList = getStoredReadingList();
-    if (books.length > 0) {
-        const readLists = books.filter(book => storedReadingList.includes(book.bookId));
+    useEffect(() => {
+        const storedReadingList = getStoredReadingList();
+        if (books.length > 0) {
+            const readLists = books.filter(book => storedReadingList.includes(book.bookId));
 
-        setReadLists(readLists);
-        setDisplayReadLists(readLists);
-      }
+            setReadLists(readLists);
+            setDisplayReadLists(readLists);
+        }
     }, [])
 
     // set wishlist lists
@@ -42,28 +43,28 @@ const ListedBooks = () => {
     }, [])
 
 
-  return (
-    <div>
-      <h2 className="text-3xl font-bold text-center">Books</h2>
-      
-      {/* Tab navigation */}
-      <div className="flex gap-5 mb-5 justify-center">
-        <button
-          className={`border-b-2 pb-2 ${activeTab === 'read' ? 'border-green-500' : ''}`}
-          onClick={() => handleTabClick('read')}
-        >
-          Read Books
-        </button>
-        <button
-          className={`border-b-2 pb-2 ${activeTab === 'wishlist' ? 'border-green-500' : ''}`}
-          onClick={() => handleTabClick('wishlist')}
-        >
-          Wishlist Books
-        </button>
-      </div>
+    return (
+        <div>
+            <h2 className="text-3xl font-bold text-center">Books</h2>
 
-      {/* Conditionally render the lists based on active tab */}
-      {/* {activeTab === 'read' ? (
+            {/* Tab navigation */}
+            <div className="flex gap-5 mb-5 justify-center">
+                <button
+                    className={`border-b-2 pb-2 ${activeTab === 'read' ? 'border-green-500' : ''}`}
+                    onClick={() => handleTabClick('read')}
+                >
+                    Read Books
+                </button>
+                <button
+                    className={`border-b-2 pb-2 ${activeTab === 'wishlist' ? 'border-green-500' : ''}`}
+                    onClick={() => handleTabClick('wishlist')}
+                >
+                    Wishlist Books
+                </button>
+            </div>
+
+            {/* Conditionally render the lists based on active tab */}
+            {/* {activeTab === 'read' ? (
         <div>
           {readBooks.length > 0 ? (
             readBooks.map((book) => (
@@ -110,25 +111,42 @@ const ListedBooks = () => {
           )}
         </div>
       )} */}
-      {
-        activeTab === 'read' ? (
-            <div>
-                <h2>Read Booklist: {readLists.length}</h2>
+            {
+                activeTab === 'read' ? (
+                    <div>
+                        {
+                            readLists.length > 0 ? (<div>
+                                <h2>Read Booklist: {readLists.length}</h2>
+    
+                                <ul>
+                                    {
+                                        displayReadLists.map(book => <ReadBookList key={book.bookId} book={book}></ReadBookList>)
+                                    }
+                                </ul>
+                            </div>)
+                            : (<p>No books in your reading list.</p>)
+                        }
+                    </div>
+                ) : (
+                    <div>
+                        {
+                            wishlistLists.length > 0 ? (<div>
+                                <h2>Wishlist Booklist: {wishlistLists.length}</h2>
 
-                <ul>
-                    {
-                        displayReadLists.map(book => <ReadBookList key={book.bookId} book={book}></ReadBookList>)
-                    }
-                </ul>
-            </div>
-        ) : (
-            <div>
+                                <ul>
+                                    {
+                                        displayWishlistLists.map(book => <Wishlist key={book.bookId} book={book}></Wishlist>)
+                                    }
+                                </ul>
 
-            </div>
-        )
-      }
-    </div>
-  );
+                            </div>)
+                            : (<p>No books in your wishlist.</p>)
+                        }
+                    </div>
+                )
+            }
+        </div>
+    );
 };
 
 export default ListedBooks;

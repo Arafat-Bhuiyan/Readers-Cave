@@ -3,7 +3,7 @@ import { IoPeopleOutline } from "react-icons/io5";
 import { SiGoogledocs } from "react-icons/si";
 import { Link } from "react-router-dom";
 
-const ReadBookList = ({book}) => {
+const Wishlist = ({book}) => {
     return (
         <div>
             <li className="flex gap-5 mb-5 border border-inherit	rounded-lg p-5">
@@ -39,4 +39,4 @@ const ReadBookList = ({book}) => {
     );
 };
 
-export default ReadBookList;
+export default Wishlist;
