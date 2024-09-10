@@ -28,6 +28,7 @@ const router =createBrowserRouter([
       {
         path: "/blogs",
         element: <Blogs />,
+        loader: () => fetch('https://newsapi.org/v2/top-headlines?sources=techcrunch&apiKey=bf38d8fa692a40e893e467b69900c127')
       },
       {
         path: "/listed_books",
